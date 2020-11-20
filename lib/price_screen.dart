@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'coin_data.dart';
 import 'package:flutter/material.dart';
+import 'dart:io' as Platform;
 
 class PriceScreen extends StatefulWidget {
   @override
@@ -11,43 +12,65 @@ class PriceScreen extends StatefulWidget {
 class _PriceScreenState extends State<PriceScreen> {
   String selectedItem = 'USD';
 
-  @override
-  Widget build(BuildContext context) {
-    List<DropdownMenuItem> getDropdownItems() {
-      List<DropdownMenuItem> items = [];
-      // for (int i = 0; i < currenciesList.length; i++) {
-      //   String currency = currenciesList[i];
-      //   var newItem = DropdownMenuItem(
-      //     child: Text(currency),
+  DropdownButton<String> androidDropdown() {
+    List<DropdownMenuItem<String>> items = [];
+    // for (int i = 0; i < currenciesList.length; i++) {
+    //   String currency = currenciesList[i];
+    //   var newItem = DropdownMenuItem(
+    //     child: Text(currency),
+    //     value: currency,
+    //   );
+    //   items.add(newItem);
+    // }
+    for (String currency in currenciesList) {
+      var newItem = DropdownMenuItem(
+        child: Text(currency),
+        value: currency,
+      );
+      items.add(newItem);
+    }
+
+    return DropdownButton<String>(
+      value: selectedItem,
+      // Solution byMuathye;
+      // items: currenciesList.map((currency) {
+      //   return DropdownMenuItem(
+      //     child: new Text(currency.toString()),
       //     value: currency,
       //   );
-      //   items.add(newItem);
-      // }
-      for (String currency in currenciesList) {
-        var newItem = DropdownMenuItem(
-          child: Text(currency),
-          value: currency,
-        );
-        items.add(newItem);
-      }
-      return items;
+      // }).toList(),
+      items: items,
+      onChanged: (value) {
+        setState(() {
+          selectedItem = value;
+        });
+      },
+    );
+  }
+
+  CupertinoPicker iOSPicker() {
+    List<Widget> items = [];
+    for (String currency in currenciesList) {
+      var newItem = Text(
+        currency,
+        style: TextStyle(
+          fontSize: 36,
+          color: Colors.white,
+        ),
+      );
+      items.add(newItem);
     }
 
-    List<Widget> getPickerItems() {
-      List<Widget> items = [];
-      for (String currency in currenciesList) {
-        var newItem = Text(
-          currency,
-          style: TextStyle(
-            fontSize: 36,
-            color: Colors.white,
-          ),
-        );
-        items.add(newItem);
-      }
-      return items;
-    }
+    return CupertinoPicker(
+      backgroundColor: Colors.lightBlue,
+      itemExtent: 32.0,
+      onSelectedItemChanged: (selectedIndex) {},
+      children: items,
+    );
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('🤑 Coin Ticker'),
@@ -82,30 +105,10 @@ class _PriceScreenState extends State<PriceScreen> {
             alignment: Alignment.center,
             padding: EdgeInsets.only(bottom: 30.0),
             color: Colors.lightBlue,
-            child: CupertinoPicker(
-                backgroundColor: Colors.lightBlue,
-                itemExtent: 32.0,
-                onSelectedItemChanged: (selectedIndex) {},
-                children: getPickerItems()),
+            child: Platform.Platform.isIOS ? iOSPicker() : androidDropdown(),
           ),
         ],
       ),
     );
   }
 }
-
-// DropdownButton<String>(
-//                 value: selectedItem,
-//                 // Solution byMuathye;
-//                 // items: currenciesList.map((currency) {
-//                 //   return DropdownMenuItem(
-//                 //     child: new Text(currency.toString()),
-//                 //     value: currency,
-//                 //   );
-//                 // }).toList(),
-//                 items: getDropdownItems(),
-//                 onChanged: (value) {
-//                   setState(() {
-//                     selectedItem = value;
-//                   });
-//                 })
