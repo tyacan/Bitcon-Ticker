@@ -1,3 +1,4 @@
+import 'package:bitcoin_ticker/exchange_rates_services.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'coin_data.dart';
@@ -10,7 +11,9 @@ class PriceScreen extends StatefulWidget {
 }
 
 class _PriceScreenState extends State<PriceScreen> {
+  ExchangeRates exchangeRates = ExchangeRates();
   String selectedItem = 'USD';
+  String selectedItemValue = '?';
 
   DropdownButton<String> androidDropdown() {
     List<DropdownMenuItem<String>> items = [];
@@ -70,6 +73,20 @@ class _PriceScreenState extends State<PriceScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    changeRate();
+  }
+
+  void changeRate() async {
+    dynamic value = await exchangeRates.getBTCToUSD();
+    setState(() {
+      selectedItemValue = value['rate'].toString();
+    });
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -90,7 +107,7 @@ class _PriceScreenState extends State<PriceScreen> {
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
                 child: Text(
-                  '1 BTC = ? USD',
+                  '1 BTC = $selectedItemValue USD',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 20.0,
