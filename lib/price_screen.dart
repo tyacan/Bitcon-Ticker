@@ -46,6 +46,7 @@ class _PriceScreenState extends State<PriceScreen> {
       onChanged: (value) {
         setState(() {
           selectedItem = value;
+          changeRate();
         });
       },
     );
@@ -67,7 +68,9 @@ class _PriceScreenState extends State<PriceScreen> {
     return CupertinoPicker(
       backgroundColor: Colors.lightBlue,
       itemExtent: 32.0,
-      onSelectedItemChanged: (selectedIndex) {},
+      onSelectedItemChanged: (selectedIndex) {
+        changeRate();
+      },
       children: items,
     );
   }
@@ -84,7 +87,6 @@ class _PriceScreenState extends State<PriceScreen> {
       selectedItemValue = value['rate'].toString();
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
