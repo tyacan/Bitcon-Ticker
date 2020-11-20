@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import 'coin_data.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +27,21 @@ class _PriceScreenState extends State<PriceScreen> {
         var newItem = DropdownMenuItem(
           child: Text(currency),
           value: currency,
+        );
+        items.add(newItem);
+      }
+      return items;
+    }
+
+    List<Widget> getPickerItems() {
+      List<Widget> items = [];
+      for (String currency in currenciesList) {
+        var newItem = Text(
+          currency,
+          style: TextStyle(
+            fontSize: 36,
+            color: Colors.white,
+          ),
         );
         items.add(newItem);
       }
@@ -65,24 +82,30 @@ class _PriceScreenState extends State<PriceScreen> {
             alignment: Alignment.center,
             padding: EdgeInsets.only(bottom: 30.0),
             color: Colors.lightBlue,
-            child: DropdownButton<String>(
-                value: selectedItem,
-                // Solution byMuathye;
-                // items: currenciesList.map((currency) {
-                //   return DropdownMenuItem(
-                //     child: new Text(currency.toString()),
-                //     value: currency,
-                //   );
-                // }).toList(),
-                items: getDropdownItems(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedItem = value;
-                  });
-                }),
+            child: CupertinoPicker(
+                backgroundColor: Colors.lightBlue,
+                itemExtent: 32.0,
+                onSelectedItemChanged: (selectedIndex) {},
+                children: getPickerItems()),
           ),
         ],
       ),
     );
   }
 }
+
+// DropdownButton<String>(
+//                 value: selectedItem,
+//                 // Solution byMuathye;
+//                 // items: currenciesList.map((currency) {
+//                 //   return DropdownMenuItem(
+//                 //     child: new Text(currency.toString()),
+//                 //     value: currency,
+//                 //   );
+//                 // }).toList(),
+//                 items: getDropdownItems(),
+//                 onChanged: (value) {
+//                   setState(() {
+//                     selectedItem = value;
+//                   });
+//                 })
