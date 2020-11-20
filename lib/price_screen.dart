@@ -14,6 +14,9 @@ class _PriceScreenState extends State<PriceScreen> {
   ExchangeRates exchangeRates = ExchangeRates();
   String selectedItem = 'USD';
   String selectedItemValue = '?';
+  String selectedItemBTC = '?';
+  String selectedItemETH = '?';
+  String selectedItemLTC = '?';
 
   DropdownButton<String> androidDropdown() {
     List<DropdownMenuItem<String>> items = [];
@@ -83,8 +86,14 @@ class _PriceScreenState extends State<PriceScreen> {
 
   void changeRate() async {
     dynamic value = await exchangeRates.getBTCToUSD();
+    dynamic valueBTC = await exchangeRates.getBTC();
+    dynamic valueETH = await exchangeRates.getETH();
+    dynamic valueLTC = await exchangeRates.getLTC();
     setState(() {
       selectedItemValue = value['rate'].toString();
+      selectedItemBTC = valueBTC['rate'].toString();
+      selectedItemETH = valueETH['rate'].toString();
+      selectedItemLTC = valueLTC['rate'].toString();
     });
   }
 
@@ -106,16 +115,42 @@ class _PriceScreenState extends State<PriceScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
-                child: Text(
-                  '1 BTC = $selectedItemValue USD',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white,
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
+                    child: Text(
+                      '1 BTC = $selectedItemBTC $selectedItem',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
-                ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
+                    child: Text(
+                      '1 ETH = $selectedItemETH $selectedItem',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 28.0),
+                    child: Text(
+                      '1 LTC = $selectedItemLTC $selectedItem',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
